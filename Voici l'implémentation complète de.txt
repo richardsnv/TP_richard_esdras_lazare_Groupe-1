@@ -1,0 +1,182 @@
+Voici l'implémentation complète de ton exercice en **Dart**, avec des explications détaillées.
+
+---
+
+## **1. Plan de l'implémentation :**
+- **Création d'une classe `Client`** avec un identifiant (`id`), un nom (`name`) et une catégorie (`category`).
+- **Méthodes de conversion JSON :**
+  - `toJson()` pour convertir un objet `Client` en JSON.
+  - `fromJson()` pour créer un objet `Client` à partir d'un JSON.
+- **Création de catégories (10 catégories)** sous forme de liste.
+- **Création de 10 clients**, chacun appartenant à une catégorie.
+- **Implémentation des filtres** :
+  - Par **nom**.
+  - Par **catégorie**.
+  - Affichage des clients correspondant aux filtres.
+
+---
+
+## **2. Code complet en Dart :**
+```dart
+import 'dart:convert';
+
+// Classe Client
+class Client {
+  int id;
+  String name;
+  String category;
+
+  // Constructeur
+  Client({required this.id, required this.name, required this.category});
+
+  // Méthode pour convertir un objet Client en JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'category': category,
+    };
+  }
+
+  // Méthode pour créer un objet Client à partir d'un JSON
+  factory Client.fromJson(Map<String, dynamic> json) {
+    return Client(
+      id: json['id'],
+      name: json['name'],
+      category: json['category'],
+    );
+  }
+
+  // Affichage personnalisé
+  @override
+  String toString() {
+    return 'Client { ID: $id, Nom: $name, Catégorie: $category }';
+  }
+}
+
+void main() {
+  // Étape 1 : Création de 10 catégories
+  List<String> categories = [
+    "Banque", "Technologie", "Commerce", "Santé", "Éducation",
+    "Transport", "Divertissement", "Alimentation", "Mode", "Sport"
+  ];
+
+  // Étape 2 : Création d'une liste de noms pour les clients
+  List<String> clientNames = [
+    "Alice", "Bob", "Charlie", "Diana", "Ethan",
+    "Fiona", "George", "Hannah", "Ian", "Jasmine"
+  ];
+
+  // Étape 3 : Création de 10 clients avec des catégories
+  List<Client> clients = List.generate(clientNames.length, (index) {
+    return Client(id: index + 1, name: clientNames[index], category: categories[index]);
+  });
+
+  // Affichage de la liste complète des clients
+  print("Liste complète des clients :");
+  clients.forEach((client) => print(client));
+
+  // Étape 4 : Filtrer les clients par nom
+  String filterByName = "Alice";
+  List<Client> filteredByName = clients.where((client) => client.name == filterByName).toList();
+
+  print("\nClients filtrés par nom ($filterByName) :");
+  filteredByName.forEach((client) => print(client));
+
+  // Étape 5 : Filtrer les clients par catégorie
+  String filterByCategory = "Technologie";
+  List<Client> filteredByCategory = clients.where((client) => client.category == filterByCategory).toList();
+
+  print("\nClients filtrés par catégorie ($filterByCategory) :");
+  filteredByCategory.forEach((client) => print(client));
+
+  // Étape 6 : Convertir un client en JSON
+  String clientJson = jsonEncode(clients[0].toJson());
+  print("\nClient converti en JSON : $clientJson");
+
+  // Étape 7 : Créer un client à partir d'un JSON
+  Client newClient = Client.fromJson(jsonDecode(clientJson));
+  print("\nClient recréé à partir du JSON : $newClient");
+}
+```
+
+---
+
+## **3. Explication détaillée :**
+
+### **1️⃣ Classe `Client`**
+- Définit **3 propriétés** : `id`, `name` et `category`.
+- **Méthode `toJson()`** :
+  - Convertit un objet `Client` en un `Map<String, dynamic>` (format JSON).
+- **Méthode `fromJson()`** :
+  - Crée un objet `Client` à partir d'un `Map<String, dynamic>`.
+- **Méthode `toString()`** :
+  - Redéfinit l'affichage d'un objet `Client`.
+
+---
+
+### **2️⃣ Création de données :**
+- **10 catégories** sont stockées dans une liste `categories`.
+- **10 noms de clients** sont stockés dans `clientNames`.
+- **Liste de clients** : Chaque client est associé à une catégorie aléatoire parmi les 10.
+
+---
+
+### **3️⃣ Filtrage des clients :**
+- **Filtre par nom** : Récupère un client spécifique (`Alice`).
+- **Filtre par catégorie** : Récupère tous les clients d'une catégorie (`Technologie`).
+
+---
+
+### **4️⃣ Conversion JSON :**
+- **Convertit** un objet `Client` en JSON.
+- **Recrée** un objet `Client` à partir d'un JSON.
+
+---
+
+## **4. Exemple de sortie du programme :**
+```
+Liste complète des clients :
+Client { ID: 1, Nom: Alice, Catégorie: Banque }
+Client { ID: 2, Nom: Bob, Catégorie: Technologie }
+Client { ID: 3, Nom: Charlie, Catégorie: Commerce }
+Client { ID: 4, Nom: Diana, Catégorie: Santé }
+Client { ID: 5, Nom: Ethan, Catégorie: Éducation }
+Client { ID: 6, Nom: Fiona, Catégorie: Transport }
+Client { ID: 7, Nom: George, Catégorie: Divertissement }
+Client { ID: 8, Nom: Hannah, Catégorie: Alimentation }
+Client { ID: 9, Nom: Ian, Catégorie: Mode }
+Client { ID: 10, Nom: Jasmine, Catégorie: Sport }
+
+Clients filtrés par nom (Alice) :
+Client { ID: 1, Nom: Alice, Catégorie: Banque }
+
+Clients filtrés par catégorie (Technologie) :
+Client { ID: 2, Nom: Bob, Catégorie: Technologie }
+
+Client converti en JSON : {"id":1,"name":"Alice","category":"Banque"}
+
+Client recréé à partir du JSON : Client { ID: 1, Nom: Alice, Catégorie: Banque }
+```
+
+---
+
+## **5. Comment tester ?**
+1. Copie-colle le code dans un fichier Dart (`main.dart`).
+2. Exécute-le avec **Dart** :
+   ```bash
+   dart run main.dart
+   ```
+
+---
+
+### ✅ **Ce que ce code fait :**
+✔ Implémente une **classe `Client`**  
+✔ Ajoute des **méthodes JSON (`toJson`, `fromJson`)**  
+✔ Crée **10 catégories** et **10 clients** avec des catégories  
+✔ **Filtre les clients** par **nom** et **catégorie**  
+✔ **Affiche les résultats**  
+
+Si tu veux stocker ces données dans un **fichier JSON**, tu peux utiliser `dart:io` pour écrire et lire les fichiers JSON.
+
+Besoin d'une amélioration ou d'une autre version ? 😊
